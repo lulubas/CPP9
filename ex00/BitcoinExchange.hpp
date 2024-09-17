@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   BitCoinExchange.hpp                                :+:      :+:    :+:   */
+/*   BitcoinExchange.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:25:42 by lbastien          #+#    #+#             */
-/*   Updated: 2024/09/17 16:26:16 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/09/17 21:49:10 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,39 +15,24 @@
 
 #include<string>
 #include<iostream>
+#include <fstream>  
+#include<map>
 
 class BitcoinExchange {
     private:
+        std::map<std::string, float> _btcRates;
+        std::map<std::string, float> _btcInput;
+        
     public:
         BitcoinExchange();
-        BitcoinExchange(std::string& type);
+        BitcoinExchange(std::string& ratesFilepath, std::string& inputFilepath);
         BitcoinExchange(const BitcoinExchange &other);
         BitcoinExchange& operator=(const BitcoinExchange &other);
         ~BitcoinExchange();
+
+        fillMap(std::string& filepath, char separator);
+        void printResults(void);
+        
 };
 
 #endif
-
-#include "BitcoinExchange.hpp"
-
-BitcoinExchange::BitcoinExchange() {
-    std::cout << "BitcoinExchange default constructor called" << std::endl;
-}
-
-BitcoinExchange::BitcoinExchange(std::string& type) {
-    std::cout << "BitcoinExchange parameterized constructor called" << std::endl;
-}
-
-BitcoinExchange::BitcoinExchange(const BitcoinExchange& other) {
-    std::cout << "BitcoinExchange copy constructor called" << std::endl;
-}
-
-BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange &other) {
-    std::cout << "BitcoinExchange copy assignement operator called" << std::endl;
-    if (this != &other) {}
-    return *this;
-}
-
-BitcoinExchange::~BitcoinExchange(){
-    std::cout << "BitcoinExchange destructor called" << std::endl;
-}

@@ -6,7 +6,7 @@
 #    By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/27 17:07:24 by lbastien          #+#    #+#              #
-#    Updated: 2024/09/17 16:27:02 by lbastien         ###   ########.fr        #
+#    Updated: 2024/09/17 21:26:00 by lbastien         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CXX = c++
 CXXFLAGS = -Wall -Werror -Wextra -std=c++98 -fsanitize=address
 
 # Target executable name
-TARGET = easyfind
+TARGET = btc
 
 # Source, Object, Dependency files
 SRC = main.cpp BitCoinExchange

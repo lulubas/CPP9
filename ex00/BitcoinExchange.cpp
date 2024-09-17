@@ -2,9 +2,9 @@
     
 BitcoinExchange::BitcoinExchange() {
     std::cout << "BitcoinExchange default constructor called" << std::endl;
-}
+};
 
-BitcoinExchange::BitcoinExchange(std::string& type) {
+BitcoinExchange::BitcoinExchange(std::string& ratesFilepath, std::string& inputFilepath) {
     std::cout << "BitcoinExchange parameterized constructor called" << std::endl;
 }
 
@@ -21,3 +21,4 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange &other) {
 BitcoinExchange::~BitcoinExchange(){
     std::cout << "BitcoinExchange destructor called" << std::endl;
 }
+
