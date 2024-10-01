@@ -12,6 +12,7 @@ BitcoinExchange::BitcoinExchange(std::string& ratesFilepath, std::string& inputF
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange& other) {
     std::cout << "BitcoinExchange copy constructor called" << std::endl;
+    (void)other;
 }
 
 BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange &other) {
@@ -26,7 +27,7 @@ BitcoinExchange::~BitcoinExchange(){
 
 void BitcoinExchange::_fillMap(const std::string& filepath) {
     std::string line;
-    std::ifstream file(filepath);
+    std::ifstream file(filepath.c_str());
 
     if (!file.is_open())
         throw couldNotOpenFile(filepath);
@@ -38,7 +39,8 @@ void BitcoinExchange::_fillMap(const std::string& filepath) {
 
         if (getline(ss, date, ',') && getline(ss, value)) {
             double btcRate = atof(value.c_str());
-            _rates.insert({date, btcRate});
+            std::pair <std::string, double> toInsert = std::make_pair(date, btcRate);
+            _rates.insert(toInsert);
         }
         else
             throw wrongSyntax();
@@ -74,20 +76,20 @@ void BitcoinExchange::_checkDate(std::string date) {
     std::istringstream ss(date);
 
     if (getline(ss, yearStr, '-') && getline(ss, monthStr, '-') && getline(ss, dayStr)) {
-        year = stoi(yearStr);
-        month = stoi(monthStr);
-        day = stoi(dayStr);
+        year = _stoi(yearStr);
+        month = _stoi(monthStr);
+        day = _stoi(dayStr);
     }
     else
         throw badInput();
     
-    if (year <= 2008 || year >= 2025 || month < 1 || month > 12 || day > 31 || day < 1)
+    if (year <= 2008 || year >= 2025 || month < 1 || month > 12 || day > 31 || day < 2)
         throw badInput();
 }
 
 void BitcoinExchange::_checkValue(std::string value) {
-    float fvalue = stof(value);
-
+    float fvalue = _stof(value);
+    
     if (fvalue <= 0)
         throw negativeNumber();
     else if (fvalue > 1000)
@@ -96,7 +98,7 @@ void BitcoinExchange::_checkValue(std::string value) {
 
 void BitcoinExchange::_processInput(const std::string& filepath) {
     std::string line;
-    std::ifstream file(filepath);
+    std::ifstream file(filepath.c_str());
 
     if (!file.is_open())
         throw couldNotOpenFile(filepath);
@@ -109,20 +111,30 @@ void BitcoinExchange::_processInput(const std::string& filepath) {
         if (getline(ss, date, '|') && getline(ss, value)) {
             _checkDate(date);
             _checkValue(value);
-
         }
         else
             throw wrongSyntax();
+        _printResult(date, value);
     }
 }
 
-BitcoinExchange::couldNotOpenFile::couldNotOpenFile(const std::string& filepath) : _filepath(filepath) {}
+void BitcoinExchange::_printResult(const std::string& date, const std::string& value) {
+    double btc = _stof(value);
+    double rate = _rates.lower_bound(date)->second;
+    double usd = btc * rate;
 
-const char *BitcoinExchange::couldNotOpenFile::what() const throw() {
+    std::cout << date << "=>" << value << " = " << usd << std::endl; 
+}
+
+BitcoinExchange::couldNotOpenFile::couldNotOpenFile(const std::string& filepath) : _filepath(filepath) {
     std::stringstream ss;
     ss << "Could not open file: " << _filepath;
-    std::string error = ss.str();
-    return (error.c_str());
+    _error = ss.str();    
+}
+BitcoinExchange::couldNotOpenFile::~couldNotOpenFile() throw() {}
+
+const char *BitcoinExchange::couldNotOpenFile::what() const throw() {
+    return (_error.c_str());
 }
 
 
@@ -138,8 +150,6 @@ const char *BitcoinExchange::negativeNumber::what() const throw() {
     return("Negative number");
 }
 
-const char *BitcoinExchange::tooLArgeNumber::what() const throw() {
+const char *BitcoinExchange::tooLargeNumber::what() const throw() {
     return("Number is too large");
 }
-
-
