@@ -74,8 +74,8 @@ void BitcoinExchange::_checkDate(std::string date) {
     int day;
 
     std::istringstream ss(date);
-
-    if (getline(ss, yearStr, '-') && getline(ss, monthStr, '-') && getline(ss, dayStr)) {
+    
+    if (getline(ss, yearStr, '-') && getline(ss, monthStr, '-') && getline(ss, dayStr, ' ')) {
         year = _stoi(yearStr);
         month = _stoi(monthStr);
         day = _stoi(dayStr);
@@ -83,13 +83,12 @@ void BitcoinExchange::_checkDate(std::string date) {
     else
         throw badInput();
     
-    if (year <= 2008 || year >= 2025 || month < 1 || month > 12 || day > 31 || day < 2)
+    if (year <= 2008 || year >= 2025 || month < 1 || month > 12 || day > 31 || day < 2) 
         throw badInput();
 }
 
 void BitcoinExchange::_checkValue(std::string value) {
     float fvalue = _stof(value);
-    
     if (fvalue <= 0)
         throw negativeNumber();
     else if (fvalue > 1000)
@@ -104,23 +103,35 @@ void BitcoinExchange::_processInput(const std::string& filepath) {
         throw couldNotOpenFile(filepath);
     
     while(std::getline(file, line)) {
+
+        if (line.find("date | value") != std::string::npos)
+            continue;
+
         std::istringstream ss(line);
         std::string date;
         std::string value;
 
-        if (getline(ss, date, '|') && getline(ss, value)) {
-            _checkDate(date);
-            _checkValue(value);
+        try {
+            if (getline(ss, date, '|') && getline(ss, value)) {
+                _checkDate(date);
+                _checkValue(value);
+            }
+            else
+                throw wrongSyntax();
         }
-        else
-            throw wrongSyntax();
+
+        catch (std::exception &e) {
+            std::cout << "Error: " << e.what() << std::endl;
+            continue;
+        }
+
         _printResult(date, value);
     }
 }
 
 void BitcoinExchange::_printResult(const std::string& date, const std::string& value) {
     double btc = _stof(value);
-    double rate = _rates.lower_bound(date)->second;
+    double rate = (--_rates.lower_bound(date))->second;
     double usd = btc * rate;
 
     std::cout << date << "=>" << value << " = " << usd << std::endl; 

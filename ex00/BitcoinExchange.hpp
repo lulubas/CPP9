@@ -6,7 +6,7 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:25:42 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/01 15:00:16 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/01 15:58:39 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ class BitcoinExchange {
                 const char *what() const throw();
         };
         
-        class badInput : std::exception {
+        class badInput : public std::exception {
             public:
                 const char *what() const throw();
         };
