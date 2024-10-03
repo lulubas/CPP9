@@ -6,7 +6,7 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:40:46 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/03 12:52:33 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/03 15:40:00 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,11 @@
 
 class RPN {
     private:
-        std::deque<std::string> _myDeque;
-        std::string _pop(void);
-        void _fill(std::string& expr);
-        int _checkInt(const std::string& str);
-        char _checkOperand(const std::string& str);
-        void _validateData(const std::string& str);
+        std::deque<int> _myDeque;
+        std::string     _expression;
+        
+        bool _isValidInt(const std::string& str);
+        bool _isValidOperand(const std::string& str);
 
     public:
         RPN();
@@ -34,7 +33,8 @@ class RPN {
         RPN& operator=(const RPN &other);
         ~RPN();
         
-        int calculate(void);
+        int processInput(void);
+        int calculate(char c);
 
         class outOfRange : public std::exception {
             public:

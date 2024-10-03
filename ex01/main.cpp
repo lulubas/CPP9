@@ -6,7 +6,7 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 21:26:22 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/03 12:03:56 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/03 15:45:50 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
     {
         std::string str(argv[1]);
         RPN myRPN(str);
-        std::cout << "Reusult=" << myRPN.calculate() << std::endl;
+        std::cout << myRPN.processInput() << std::endl;
         return 0;
     }
     catch (std::exception &e) {

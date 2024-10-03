@@ -6,113 +6,99 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:58:35 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/03 13:26:19 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/03 16:07:54 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RPN.hpp"
 
 RPN::RPN() {
-    std::cout << "RPN default constructor called" << std::endl;
+    //std::cout << "RPN default constructor called" << std::endl;
 }
 
-RPN::RPN(std::string& expr) {
-    std::cout << "RPN parameterized constructor called" << std::endl;
-    _fill(expr);
+RPN::RPN(std::string& str) : _expression(str) {
+    //std::cout << "RPN parameterized constructor called" << std::endl;
 }
 
 RPN::RPN(const RPN& other) {
-    std::cout << "RPN copy constructor called" << std::endl;
+    //std::cout << "RPN copy constructor called" << std::endl;
     (void)other;
 }
 
 RPN& RPN::operator=(const RPN &other) {
-    std::cout << "RPN copy assignement operator called" << std::endl;
+    //std::cout << "RPN copy assignement operator called" << std::endl;
     if (this != &other) {}
     return *this;
 }
 
 RPN::~RPN(){
-    std::cout << "RPN destructor called" << std::endl;
+    //std::cout << "RPN destructor called" << std::endl;
 }
 
-void RPN::_fill(std::string& expr) {
-    std::stringstream ss(expr);
+int RPN::processInput(void) {
+    std::stringstream ss(_expression);
     std::string word;
-
+    
     while (ss >> word) {
-        _validateData(word);
-        _myDeque.push_back(word);
-    }
-}
-
-int RPN::calculate(void) {
-    int result = 0;
-
-    while (_myDeque.size() > 1) {
-        int num1 = _checkInt(_pop());
-        int num2 = _checkInt(_pop());
-        char operand = _checkOperand(_pop());
-                
-        switch (operand) {
-            case '+' :
-                result = num1 + num2;
-                break;
-            case '-' :
-                result = num1 - num2;
-                break;
-            case '*':
-                result = num1 * num2;
-                break;
-            case '/':
-                if (num2 == 0)
-                    throw divisionByZero();
-                result = num1 / num2;
-                break;
-            default:
-                throw badInput();
+        if (_isValidInt(word))
+            _myDeque.push_front(stoi(word));
+        else if (_isValidOperand(word)) {
+            int result = calculate(word[0]);
+            _myDeque.push_front(result);
         }
-        _myDeque.push_front(std::to_string(result));
+        else
+            throw badInput();
     }
-    if (_myDeque.size())
-        return;
-}
-
-int RPN::_checkInt(const std::string& str) {
-    try {
-        int num = stoi(str);
-        return num;
-    }
-    catch (std::exception &e) {
-        throw badInput();
-    }
-}
-
-void RPN::_validateData(const std::string& str) {
-    if (str == "+" || str == "-" || str == "*" || str == "/")
-        return;
-    try {
-        int num = stoi(str);
-        if (num < 0 || num > 9)
-            throw outOfRange();
-        return;
-    }
-    catch (std::exception &e) {
-        throw badInput();
-    }
-}
-
-char RPN::_checkOperand(const std::string& str) {
-    if (str == "+" || str == "-" || str == "*" || str == "/")
-        return str[0];
+    
+    if(_myDeque.size() == 1)
+        return _myDeque.front();
     else
         throw badInput();
 }
 
-std::string RPN::_pop(void) {
-    std::string str = _myDeque.front();
+int RPN::calculate (char operand) {
+    int num1 = _myDeque.front();
     _myDeque.pop_front();
-    return(str);
+    int num2 = _myDeque.front();
+    _myDeque.pop_front();
+        
+    switch (operand) {
+            case '+' :
+                return (num2 + num1);
+                break;
+            case '-' :
+                return (num2 - num1);
+                break;
+            case '*':
+                return (num2 * num1);
+                break;
+            case '/':
+                if (num2 == 0)
+                    throw divisionByZero();
+                return (num2 / num1);
+                break;
+            default:
+                throw badInput();
+        }
+}
+
+bool RPN::_isValidInt(const std::string& str) {
+    try {
+        int num = stoi(str);
+        if (num < 0 || num > 9)
+            throw outOfRange();
+        return true;
+    }
+    catch (std::exception &e) {
+        return false;
+    }
+}
+
+bool RPN::_isValidOperand(const std::string& str) {
+    if (str == "+" || str == "-" || str == "*" || str == "/")
+        return true;
+    else
+        return false;
 }
 
 const char* RPN::outOfRange::what() const throw() {
@@ -120,7 +106,7 @@ const char* RPN::outOfRange::what() const throw() {
 }
 
 const char* RPN::badInput::what() const throw() {
-    return("Bad Input. Only Ints and operands.");
+    return("Bad Input.");
 }
 
 const char* RPN::divisionByZero::what() const throw() {
