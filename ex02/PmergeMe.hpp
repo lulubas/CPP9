@@ -6,7 +6,7 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 10:56:52 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/04 12:23:21 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/04 18:03:34 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,22 @@ class PmergeMe {
             return value;
         };
 
+        void _sortPairs(void) {
+            unsigned long i;
+            for (i = 0; i + 1 < _ctn.size(); i += 2){
+                int larger;
+                if (_ctn[i] < _ctn[i + 1]) {
+                    larger = _ctn[i + 1];
+                    _ctn.erase(_ctn.begin() + i + 1);
+                }
+                else {
+                    larger = _ctn[1];
+                    _ctn.erase(_ctn.begin() + i);
+                }
+                _ctn.insert(_ctn.begin(), larger);
+            }
+        }     
+        
     public:
         PmergeMe(){}
         PmergeMe(const PmergeMe &other){(void)other;}
@@ -52,6 +68,11 @@ class PmergeMe {
             else
                 _ctn.push_back(num);        
         }
+        
+        void sort(void) {
+            _sortPairs();
+        }
+
 
         void print(void) {
             unsigned long i;

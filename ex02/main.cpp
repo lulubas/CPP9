@@ -22,10 +22,12 @@ int main(int argc, char **argv) {
         std::cout << "Error: " << e.what() << std::endl;
         return 1;
     }
+    mpmVector.sort();
+    mpmDeque.sort();
 
     std::cout << "Printing content of Vector :" << std::endl;
     mpmVector.print();
-    std::cout << "Printing content of List :" << std::endl;
+    std::cout << "Printing content of Deque :" << std::endl;
     mpmDeque.print();
     return 0;
 }
