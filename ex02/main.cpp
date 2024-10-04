@@ -6,22 +6,26 @@ int main(int argc, char **argv) {
         return 0;
     }
 
-    PmergeMe<std::vector<int>> mpmVector;
-    PmergeMe<std::list<int>> mpmList;
+    PmergeMe< std::vector<int> > mpmVector;
+    PmergeMe< std::deque<int> > mpmDeque;
 
     try
     {
         int i;
-        int j;
         for (i = 1; i < argc; i++) {
             std::string numStr(argv[i]);
             mpmVector.fill(numStr);
-            mpmList.fill(numStr);
+            mpmDeque.fill(numStr);
         }
-        return 0;
-    }
+    }    
     catch (std::exception &e) {
         std::cout << "Error: " << e.what() << std::endl;
         return 1;
     }
+
+    std::cout << "Printing content of Vector :" << std::endl;
+    mpmVector.print();
+    std::cout << "Printing content of List :" << std::endl;
+    mpmDeque.print();
+    return 0;
 }
