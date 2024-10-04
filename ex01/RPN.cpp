@@ -6,7 +6,7 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:58:35 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/03 16:07:54 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/04 11:12:34 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int RPN::processInput(void) {
     
     while (ss >> word) {
         if (_isValidInt(word))
-            _myDeque.push_front(stoi(word));
+            _myDeque.push_front(_stoi(word));
         else if (_isValidOperand(word)) {
             int result = calculate(word[0]);
             _myDeque.push_front(result);
@@ -84,7 +84,7 @@ int RPN::calculate (char operand) {
 
 bool RPN::_isValidInt(const std::string& str) {
     try {
-        int num = stoi(str);
+        int num = std::stoi(str);
         if (num < 0 || num > 9)
             throw outOfRange();
         return true;
@@ -99,6 +99,15 @@ bool RPN::_isValidOperand(const std::string& str) {
         return true;
     else
         return false;
+}
+
+int RPN::_stoi(const std::string& str) {
+    std::stringstream ss(str);
+    int value;
+    ss >> value;
+    if (ss.fail() || !ss.eof())
+        throw badInput();
+    return value;
 }
 
 const char* RPN::outOfRange::what() const throw() {

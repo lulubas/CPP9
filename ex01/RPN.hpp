@@ -6,7 +6,7 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:40:46 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/03 15:40:00 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/04 10:42:17 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ class RPN {
         
         bool _isValidInt(const std::string& str);
         bool _isValidOperand(const std::string& str);
+        int _stoi(const std::string& str);
 
     public:
         RPN();
