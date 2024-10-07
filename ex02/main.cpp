@@ -25,9 +25,9 @@ int main(int argc, char **argv) {
     mpmVector.sort();
     mpmDeque.sort();
 
-    std::cout << "Printing content of Vector :" << std::endl;
+    std::cout << "==Vector==" << std::endl;
     mpmVector.print();
-    std::cout << "Printing content of Deque :" << std::endl;
+    std::cout << "==Deque==" << std::endl;
     mpmDeque.print();
     return 0;
 }
