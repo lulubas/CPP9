@@ -5,7 +5,8 @@
 
 int main(int argc, char **argv) {
     if (argc <= 1) {
-        std::cout << "Use at least one argument" << std::endl;
+        std::cout << "Use at least one argument. Try:" << std::endl;
+        std::cout << "./PmergeMe `shuf -i 1-100 -n 25 | tr \"\\n\" \" \"`" << std::endl;
         return 0;
     }
 

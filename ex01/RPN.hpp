@@ -6,7 +6,7 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:40:46 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/04 10:42:17 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/10 15:26:56 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 #include<string>
 #include<sstream>
 #include<iostream>
-#include<deque>
+#include<stack>
 
 class RPN {
     private:
-        std::deque<int> _myDeque;
+        std::stack<int> _stack;
         std::string     _expression;
         
         bool _isValidInt(const std::string& str);

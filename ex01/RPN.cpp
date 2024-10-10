@@ -6,7 +6,7 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:58:35 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/04 11:12:34 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/10 15:31:11 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,26 @@ int RPN::processInput(void) {
     
     while (ss >> word) {
         if (_isValidInt(word))
-            _myDeque.push_front(_stoi(word));
-        else if (_isValidOperand(word)) {
+            _stack.push(_stoi(word));
+        else if (_isValidOperand(word) && _stack.size() >= 2) {
             int result = calculate(word[0]);
-            _myDeque.push_front(result);
+            _stack.push(result);
         }
         else
             throw badInput();
     }
     
-    if(_myDeque.size() == 1)
-        return _myDeque.front();
+    if(_stack.size() == 1)
+        return _stack.top();
     else
         throw badInput();
 }
 
 int RPN::calculate (char operand) {
-    int num1 = _myDeque.front();
-    _myDeque.pop_front();
-    int num2 = _myDeque.front();
-    _myDeque.pop_front();
+    int num1 = _stack.top();
+    _stack.pop();
+    int num2 = _stack.top();
+    _stack.pop();
         
     switch (operand) {
             case '+' :
@@ -84,7 +84,7 @@ int RPN::calculate (char operand) {
 
 bool RPN::_isValidInt(const std::string& str) {
     try {
-        int num = std::stoi(str);
+        int num = _stoi(str);
         if (num < 0 || num > 9)
             throw outOfRange();
         return true;
