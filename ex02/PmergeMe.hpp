@@ -6,7 +6,7 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 10:56:52 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/09 18:00:05 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/10 14:31:36 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,25 +37,22 @@ class PmergeMe {
         }
 
         void _insertionSort(int start, int end) {
-            for (int i = start + 1; i <= end; ++i) {
+            for (int i = start + 1; i <= end; i++) {
                 int value = _ctn[i];
                 int j = i - 1;
                 while (j >= start && _ctn[j] > value) {
                     _ctn[j + 1] = _ctn[j];
-                    --j;
+                    j--;
                 }
                 _ctn[j + 1] = value;
             }
         }
 
         void _mergeSort (int start, int end) {
-            if (end - start <= 10)
+            if (end - start < 10)
                 _insertionSort(start, end);
             else {
                 int mid = start + ((end - start) / 2);
-                std::cout << "Start is=" << start << std::endl;
-                std::cout << "Mid is=" << mid << std::endl;
-                std::cout << "End is=" << end << std::endl;
                 _mergeSort(start, mid);
                 _mergeSort(mid + 1, end);
                 _merge(start, mid, end);                    
@@ -63,22 +60,24 @@ class PmergeMe {
         }
 
         void _merge(int start, int mid, int end) {
-            int lastSecond = end;
-            int lastFirst = mid;
-            std::cout << "lastSecond is=" << lastSecond << std::endl;
-            std::cout << "lastFirst is=" << lastFirst << std::endl;
-
-            while (lastSecond > mid) {
-                if (_ctn[lastSecond] >= _ctn[lastFirst])
-                    _ctn[end--] = _ctn[lastSecond--];
+            Container tmp;
+            int i = start;
+            int j = mid + 1;
+            
+            while (i <= mid && j <= end) {
+                if (_ctn[i] <= _ctn[j])
+                    tmp.push_back(_ctn[i++]);
                 else
-                    _ctn[end--] = _ctn[lastFirst--];
-                std::cout << "_ctn[end]=" << _ctn[end + 1] << std::endl;
+                    tmp.push_back(_ctn[j++]);
             }
 
-            while (lastFirst >= start) {
-                _ctn[end--] = _ctn[lastFirst--];
-            }
+            while (i <= mid)
+                tmp.push_back(_ctn[i++]);
+            while (j <= end)
+                tmp.push_back(_ctn[j++]);
+            j = 0;
+            for (i = start; i <= end; i++)
+                _ctn[i] = tmp[j++];     
         }
 
     public:
@@ -102,12 +101,10 @@ class PmergeMe {
             _mergeSort(0, _ctn.size() - 1);
         }
 
-        void print(void) {
-            unsigned long i;
-            
-            std::cout << "Container:" << std::endl;
-            for (i = 0; i < _ctn.size(); i++)
-                std::cout << _ctn[i] << std::endl;
+        void print(int start, int end) {
+            int i;
+            for (i = start; i <= end; i++)
+                std::cout << _ctn[i] << " ";
         }
 
         class duplicateValue : public std::exception {
