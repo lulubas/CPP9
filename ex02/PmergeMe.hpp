@@ -6,7 +6,7 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 10:56:52 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/07 16:49:55 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/09 18:00:05 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@
 template <typename Container> 
 class PmergeMe {
     private:
-        Container _Ctn;
-        Container _sortedCtn;
+        Container _ctn;
         
         int _stoi(const std::string& str) {
             std::stringstream ss(str);
@@ -39,13 +38,13 @@ class PmergeMe {
 
         void _insertionSort(int start, int end) {
             for (int i = start + 1; i <= end; ++i) {
-                int value = _Ctn[i];
+                int value = _ctn[i];
                 int j = i - 1;
-                while (j >= start && _Ctn[j] > value) {
-                    _Ctn[j + 1] = _Ctn[j];
+                while (j >= start && _ctn[j] > value) {
+                    _ctn[j + 1] = _ctn[j];
                     --j;
                 }
-                _Ctn[j + 1] = value;
+                _ctn[j + 1] = value;
             }
         }
 
@@ -54,8 +53,11 @@ class PmergeMe {
                 _insertionSort(start, end);
             else {
                 int mid = start + ((end - start) / 2);
+                std::cout << "Start is=" << start << std::endl;
+                std::cout << "Mid is=" << mid << std::endl;
+                std::cout << "End is=" << end << std::endl;
                 _mergeSort(start, mid);
-                _mergeSort(mid, end);
+                _mergeSort(mid + 1, end);
                 _merge(start, mid, end);                    
             }
         }
@@ -63,19 +65,22 @@ class PmergeMe {
         void _merge(int start, int mid, int end) {
             int lastSecond = end;
             int lastFirst = mid;
+            std::cout << "lastSecond is=" << lastSecond << std::endl;
+            std::cout << "lastFirst is=" << lastFirst << std::endl;
 
-            while (lastFirst >= start) {
+            while (lastSecond > mid) {
                 if (_ctn[lastSecond] >= _ctn[lastFirst])
                     _ctn[end--] = _ctn[lastSecond--];
                 else
                     _ctn[end--] = _ctn[lastFirst--];
+                std::cout << "_ctn[end]=" << _ctn[end + 1] << std::endl;
             }
 
-            while (lastSecond > mid)
-                    _ctn[end--] = _ctn[lastSecond--];
+            while (lastFirst >= start) {
+                _ctn[end--] = _ctn[lastFirst--];
+            }
         }
 
-         
     public:
         PmergeMe(){}
         PmergeMe(const PmergeMe &other){(void)other;}
@@ -87,25 +92,22 @@ class PmergeMe {
             
             if (num < 0)
                 throw negativeNumber();
-            else if (std::find(_unsortedCtn.begin(), _unsortedCtn.end(), num) != _unsortedCtn.end())
+            else if (std::find(_ctn.begin(), _ctn.end(), num) != _ctn.end())
                 throw duplicateValue();
             else
-                _unsortedCtn.push_back(num);        
+                _ctn.push_back(num);        
         }
         
         void sort(void) {
-            _mergeSort();
+            _mergeSort(0, _ctn.size() - 1);
         }
 
         void print(void) {
             unsigned long i;
             
-            std::cout << "Unsorted=" << std::endl;
-            for (i = 0; i < _unsortedCtn.size(); i++)
-                std::cout << _unsortedCtn[i] << std::endl;
-            std::cout << "Sorted=" << std::endl;
-            for (i = 0; i < _sortedCtn.size(); i++)
-                std::cout << _sortedCtn[i] << std::endl;
+            std::cout << "Container:" << std::endl;
+            for (i = 0; i < _ctn.size(); i++)
+                std::cout << _ctn[i] << std::endl;
         }
 
         class duplicateValue : public std::exception {
