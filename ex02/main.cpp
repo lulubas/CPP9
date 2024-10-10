@@ -10,11 +10,6 @@ int main(int argc, char **argv) {
         return 0;
     }
 
-    std::cout << "Before: ";
-    int i;
-    for (i = 1; i < argc; i++)
-        std::cout << argv[i] << " ";
-    std::cout << std::endl;
 
     //Vector
     PmergeMe< std::vector<int> > mpmVector;
@@ -23,8 +18,15 @@ int main(int argc, char **argv) {
     {
         int i;
         for (i = 1; i < argc; i++) {
-            std::string numStr(argv[i]);
-            mpmVector.fill(numStr);
+            if (i >= argc - 1) {
+                std::string numStr(argv[i++]);
+                mpmVector.fill(numStr);
+            }
+            else {
+            std::string numStr1(argv[i++]);
+            std::string numStr2(argv[i]);
+            mpmVector.fill(numStr1, numStr2);
+            }
         }
     }
     catch (std::exception &e) {
@@ -43,8 +45,15 @@ int main(int argc, char **argv) {
     {
         int i;
         for (i = 1; i < argc; i++) {
-            std::string numStr(argv[i]);
-            mpmDeque.fill(numStr);
+            if (i >= argc - 1) {
+                std::string numStr(argv[i++]);
+                mpmDeque.fill(numStr);
+            }
+            else {
+            std::string numStr1(argv[i++]);
+            std::string numStr2(argv[i]);
+            mpmDeque.fill(numStr1, numStr2);
+            }
         }
     }
     catch (std::exception &e) {
@@ -55,7 +64,13 @@ int main(int argc, char **argv) {
     clock_t tDequeSort = clock();
     mpmDeque.sort();
     tDequeSort = clock() - tDequeSort;
-
+    
+    std::cout << "Before: ";
+    int i;
+    for (i = 1; i < argc; i++)
+        std::cout << argv[i] << " ";
+    std::cout << std::endl;
+    
     std::cout << "After: ";
     mpmVector.print(0, argc - 2);
     std::cout << std::endl;

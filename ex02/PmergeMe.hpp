@@ -6,7 +6,7 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 10:56:52 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/10 16:07:59 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/10 17:23:42 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ template <typename Container>
 class PmergeMe {
     private:
         Container _ctn;
+        Container _smaller;
         
         int _stoi(const std::string& str) {
             std::stringstream ss(str);
@@ -86,19 +87,49 @@ class PmergeMe {
         PmergeMe& operator=(const PmergeMe &other){(void)other;}
         ~PmergeMe(){}
 
-        void fill(std::string str) {
-            int num = _stoi(str);
+        void fill(std::string numStr) {
+            int num = _stoi(numStr);
             
             if (num < 0)
                 throw negativeNumber();
-            else if (std::find(_ctn.begin(), _ctn.end(), num) != _ctn.end())
+            else if (std::find(_ctn.begin(), _ctn.end(), num) != _ctn.end() || std::find(_smaller.begin(), _ctn.end(), num) != _ctn.end())
                 throw duplicateValue();
-            else
-                _ctn.push_back(num);        
+            else 
+                _smaller.push_back(num);     
+        }
+        
+        void fill(std::string numStr1, std::string numStr2) {
+            int num1 = _stoi(numStr1);
+            int num2 = _stoi(numStr2);
+            
+            if (num1 < 0 || num2 < 0)
+                throw negativeNumber();
+            else if (   std::find(_ctn.begin(), _ctn.end(), num1) != _ctn.end() || \
+                        std::find(_ctn.begin(), _ctn.end(), num2) != _ctn.end() || \
+                        std::find(_smaller.begin(), _ctn.end(), num1) != _ctn.end() || \
+                        std::find(_smaller.begin(), _ctn.end(), num2) != _ctn.end())
+                throw duplicateValue();
+            else {
+                if (num1 == num2)
+                    throw duplicateValue();
+                else if (num1 > num2) {
+                    _ctn.push_back(num1);
+                    _smaller.push_back(num2);
+                }
+                else {
+                    _ctn.push_back(num2);
+                    _smaller.push_back(num1);
+                }   
+            }      
         }
         
         void sort(void) {
             _mergeSort(0, _ctn.size() - 1);
+            while(_smaller.size() > 0) {
+                int num = _smaller.back();
+                _smaller.pop_back();
+                _ctn.insert(std::lower_bound(_ctn.begin(), _ctn.end(), num), num);
+            }
         }
 
         void print(int start, int end) {
