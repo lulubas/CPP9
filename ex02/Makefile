@@ -6,7 +6,7 @@
 #    By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/27 17:07:24 by lbastien          #+#    #+#              #
-#    Updated: 2024/10/04 16:35:27 by lbastien         ###   ########.fr        #
+#    Updated: 2024/10/10 17:40:01 by lbastien         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ all: $(TARGET)
 
 # Run target ignoring exit status
 run: all
-	-@./$(TARGET) 3 2 1 0
+	./$(TARGET) 3 2 1 0
 
 # Compile .cpp files into .o object files
 %.o : %.cpp
