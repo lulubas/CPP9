@@ -6,7 +6,7 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 10:56:52 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/15 13:01:09 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/15 13:10:04 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ class PmergeMe {
         class negativeNumber : public std::exception {
             public:
                 const char* what() const throw() {
-                    return("Neative Number."); 
+                    return("Negative Number."); 
                 }
         };
         
