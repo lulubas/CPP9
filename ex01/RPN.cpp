@@ -6,7 +6,7 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:58:35 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/10 15:31:11 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/15 13:04:42 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int RPN::calculate (char operand) {
                 return (num2 * num1);
                 break;
             case '/':
-                if (num2 == 0)
+                if (num1 == 0)
                     throw divisionByZero();
                 return (num2 / num1);
                 break;
@@ -119,5 +119,5 @@ const char* RPN::badInput::what() const throw() {
 }
 
 const char* RPN::divisionByZero::what() const throw() {
-    return("No NOOOOOOO. You didived by zero. World has ended.");
+    return("B0000MMM!");
 }

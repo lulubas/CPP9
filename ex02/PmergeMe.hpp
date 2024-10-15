@@ -6,7 +6,7 @@
 /*   By: lbastien <lbastien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 10:56:52 by lbastien          #+#    #+#             */
-/*   Updated: 2024/10/10 17:23:42 by lbastien         ###   ########.fr       */
+/*   Updated: 2024/10/15 13:01:09 by lbastien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ class PmergeMe {
             
             if (num < 0)
                 throw negativeNumber();
-            else if (std::find(_ctn.begin(), _ctn.end(), num) != _ctn.end() || std::find(_smaller.begin(), _ctn.end(), num) != _ctn.end())
+            else if (std::find(_ctn.begin(), _ctn.end(), num) != _ctn.end() || std::find(_smaller.begin(), _smaller.end(), num) != _smaller.end())
                 throw duplicateValue();
             else 
                 _smaller.push_back(num);     
@@ -106,8 +106,8 @@ class PmergeMe {
                 throw negativeNumber();
             else if (   std::find(_ctn.begin(), _ctn.end(), num1) != _ctn.end() || \
                         std::find(_ctn.begin(), _ctn.end(), num2) != _ctn.end() || \
-                        std::find(_smaller.begin(), _ctn.end(), num1) != _ctn.end() || \
-                        std::find(_smaller.begin(), _ctn.end(), num2) != _ctn.end())
+                        std::find(_smaller.begin(), _smaller.end(), num1) != _smaller.end() || \
+                        std::find(_smaller.begin(), _smaller.end(), num2) != _smaller.end())
                 throw duplicateValue();
             else {
                 if (num1 == num2)
